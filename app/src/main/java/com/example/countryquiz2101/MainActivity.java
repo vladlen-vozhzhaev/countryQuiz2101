@@ -49,12 +49,15 @@ public class MainActivity extends AppCompatActivity {
         questionList.toArray(questions); // превращаем обратно в массив
         imageView.setImageResource(questions[questionIndex].getImageResId());
         ArrayList<Button> answerButtons = new ArrayList<>();
-        ArrayList<Integer> randomIndexes = new ArrayList<>();
         answerButtons.add(button1);
         answerButtons.add(button2);
         answerButtons.add(button3);
         answerButtons.add(button4);
+        renderQuestion(answerButtons);
+    }
+    public void renderQuestion(ArrayList<Button> answerButtons){
         Collections.shuffle(answerButtons);
+        ArrayList<Integer> randomIndexes = new ArrayList<>();
         randomIndexes.add(questionIndex);
         for (int i=0; i<answerButtons.size(); i++) {
             int randomIndex = random.nextInt(questions.length-1);
@@ -63,111 +66,34 @@ public class MainActivity extends AppCompatActivity {
                 answerButtons.get(i).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(MainActivity.this, "Правильно", Toast.LENGTH_SHORT).show();
-                        questionIndex++;
-                        imageView.setImageResource(questions[questionIndex].getImageResId());
-                        Collections.shuffle(answerButtons);
-                        randomIndexes.clear();
-                        randomIndexes.add(questionIndex);
-                        for (int i=0; i<answerButtons.size(); i++) {
-                            int randomIndex = random.nextInt(questions.length-1);
-                            if(i == answerButtons.size()-1){ // Правильный вариант ответа
-                                answerButtons.get(i).setText(questions[questionIndex].getCorrectAnswer());
-                                answerButtons.get(i).setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Toast.makeText(MainActivity.this, "Правильно", Toast.LENGTH_SHORT).show();
-                                        questionIndex++;
-                                        imageView.setImageResource(questions[questionIndex].getImageResId());
-                                        Collections.shuffle(answerButtons);
-                                        randomIndexes.clear();
-                                        randomIndexes.add(questionIndex);
-                                    }
-                                });
-                            }else
-                            if(randomIndexes.contains(randomIndex)) {
-                                i--;
-                                continue;
-                            }
-                            else { // Любая страна (неправильный вариант ответа)
-                                answerButtons.get(i).setText(questions[randomIndex].getCorrectAnswer());
-                                answerButtons.get(i).setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Toast.makeText(MainActivity.this, "Не правильно", Toast.LENGTH_SHORT).show();
-                                        questionIndex++;
-                                        imageView.setImageResource(questions[questionIndex].getImageResId());
-                                        Collections.shuffle(answerButtons);
-                                        randomIndexes.clear();
-                                        randomIndexes.add(questionIndex);
-
-                                    }
-                                });
-                            }
-                            randomIndexes.add(randomIndex);
-
-                        }
+                        checkAnswer(true);
+                        renderQuestion(answerButtons);
                     }
                 });
             }else
-                if(randomIndexes.contains(randomIndex)) {
-                    i--;
-                    continue;
-                }
-                else { // Любая страна (неправильный вариант ответа)
-                    answerButtons.get(i).setText(questions[randomIndex].getCorrectAnswer());
-                    answerButtons.get(i).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Toast.makeText(MainActivity.this, "Не правильно", Toast.LENGTH_SHORT).show();
-                            questionIndex++;
-                            imageView.setImageResource(questions[questionIndex].getImageResId());
-                            Collections.shuffle(answerButtons);
-                            randomIndexes.clear();
-                            randomIndexes.add(questionIndex);
-                            for (int i=0; i<answerButtons.size(); i++) {
-                                int randomIndex = random.nextInt(questions.length-1);
-                                if(i == answerButtons.size()-1){ // Правильный вариант ответа
-                                    answerButtons.get(i).setText(questions[questionIndex].getCorrectAnswer());
-                                    answerButtons.get(i).setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            Toast.makeText(MainActivity.this, "Правильно", Toast.LENGTH_SHORT).show();
-                                            questionIndex++;
-                                            imageView.setImageResource(questions[questionIndex].getImageResId());
-                                            Collections.shuffle(answerButtons);
-                                            randomIndexes.clear();
-                                            randomIndexes.add(questionIndex);
-                                        }
-                                    });
-                                }else
-                                if(randomIndexes.contains(randomIndex)) {
-                                    i--;
-                                    continue;
-                                }
-                                else { // Любая страна (неправильный вариант ответа)
-                                    answerButtons.get(i).setText(questions[randomIndex].getCorrectAnswer());
-                                    answerButtons.get(i).setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            Toast.makeText(MainActivity.this, "Не правильно", Toast.LENGTH_SHORT).show();
-                                            questionIndex++;
-                                            imageView.setImageResource(questions[questionIndex].getImageResId());
-                                            Collections.shuffle(answerButtons);
-                                            randomIndexes.clear();
-                                            randomIndexes.add(questionIndex);
-
-                                        }
-                                    });
-                                }
-                                randomIndexes.add(randomIndex);
-
-                            }
-                        }
-                    });
-                }
+            if(randomIndexes.contains(randomIndex)) {
+                i--;
+                continue;
+            }
+            else { // Любая страна (неправильный вариант ответа)
+                answerButtons.get(i).setText(questions[randomIndex].getCorrectAnswer());
+                answerButtons.get(i).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        checkAnswer(false);
+                        renderQuestion(answerButtons);
+                    }
+                });
+            }
             randomIndexes.add(randomIndex);
-
         }
+    }
+    public void checkAnswer(boolean btn){
+        if(btn)
+            Toast.makeText(MainActivity.this, "Правильно", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(MainActivity.this, "Не правильно", Toast.LENGTH_SHORT).show();
+        questionIndex++;
+        imageView.setImageResource(questions[questionIndex].getImageResId());
     }
 }
