@@ -2,6 +2,7 @@ package com.example.countryquiz2101;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     List<Question> questionList = Arrays.asList(questions);
     Random random = new Random();
     int questionIndex = 0;
+    ArrayList<UserAnswer> userAnswers = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,10 +91,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void checkAnswer(boolean btn){
+        UserAnswer userAnswer = new UserAnswer(
+                questions[questionIndex].getImageResId(), // Изображение флага
+                questions[questionIndex].getCorrectAnswer(), // Правильное название страны
+                btn // Правильный или не правильный ответ пользователя
+        );
+        userAnswers.add(userAnswer);
         if(btn)
             Toast.makeText(MainActivity.this, "Правильно", Toast.LENGTH_SHORT).show();
         else
             Toast.makeText(MainActivity.this, "Не правильно", Toast.LENGTH_SHORT).show();
+        if(questionIndex == questions.length - 1){
+            Intent intent = new Intent(MainActivity.this, ResultActivity.class);
+            intent.putExtra("userAnswers", userAnswers);
+            startActivity(intent);
+        }
         questionIndex++;
         imageView.setImageResource(questions[questionIndex].getImageResId());
     }
