@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, ResultActivity.class);
             intent.putExtra("userAnswers", userAnswers);
             startActivity(intent);
+            questionIndex = 0;
         }
         questionIndex++;
         imageView.setImageResource(questions[questionIndex].getImageResId());
