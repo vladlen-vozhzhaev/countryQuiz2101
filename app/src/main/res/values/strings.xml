@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">countryQuiz2101</string>
+    <string name="ad">Андорра</string>
+    <string name="ae">ОАЭ</string>
+    <string name="af">Афганистан</string>
+    <string name="ag">Антигуа и Барбуда</string>
+    <string name="ai">Ангилья</string>
+    <string name="al">Албания</string>
+    <string name="am">Армения</string>
+    <string name="ao">Ангола</string>
+    <string name="aq">Антарктида</string>
+    <string name="ru">Россия</string>
+</resources>
