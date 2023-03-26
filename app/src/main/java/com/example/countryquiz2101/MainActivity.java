@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     };
     List<Question> questionList = Arrays.asList(questions);
     Random random = new Random();
+    int questionIndex = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,16 +47,127 @@ public class MainActivity extends AppCompatActivity {
         button4 = findViewById(R.id.button4);
         Collections.shuffle(questionList); // перемешиваем элементы коллекции в случайном порядке
         questionList.toArray(questions); // превращаем обратно в массив
-        imageView.setImageResource(questions[0].getImageResId());
+        imageView.setImageResource(questions[questionIndex].getImageResId());
         ArrayList<Button> answerButtons = new ArrayList<>();
+        ArrayList<Integer> randomIndexes = new ArrayList<>();
         answerButtons.add(button1);
         answerButtons.add(button2);
         answerButtons.add(button3);
         answerButtons.add(button4);
         Collections.shuffle(answerButtons);
-        answerButtons.get(0).setText(questions[random.nextInt(questions.length-1)].getCorrectAnswer());
-        answerButtons.get(1).setText(questions[random.nextInt(questions.length-1)].getCorrectAnswer());
-        answerButtons.get(2).setText(questions[0].getCorrectAnswer());
-        answerButtons.get(3).setText(questions[random.nextInt(questions.length-1)].getCorrectAnswer());
+        randomIndexes.add(questionIndex);
+        for (int i=0; i<answerButtons.size(); i++) {
+            int randomIndex = random.nextInt(questions.length-1);
+            if(i == answerButtons.size()-1){ // Правильный вариант ответа
+                answerButtons.get(i).setText(questions[questionIndex].getCorrectAnswer());
+                answerButtons.get(i).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(MainActivity.this, "Правильно", Toast.LENGTH_SHORT).show();
+                        questionIndex++;
+                        imageView.setImageResource(questions[questionIndex].getImageResId());
+                        Collections.shuffle(answerButtons);
+                        randomIndexes.clear();
+                        randomIndexes.add(questionIndex);
+                        for (int i=0; i<answerButtons.size(); i++) {
+                            int randomIndex = random.nextInt(questions.length-1);
+                            if(i == answerButtons.size()-1){ // Правильный вариант ответа
+                                answerButtons.get(i).setText(questions[questionIndex].getCorrectAnswer());
+                                answerButtons.get(i).setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Toast.makeText(MainActivity.this, "Правильно", Toast.LENGTH_SHORT).show();
+                                        questionIndex++;
+                                        imageView.setImageResource(questions[questionIndex].getImageResId());
+                                        Collections.shuffle(answerButtons);
+                                        randomIndexes.clear();
+                                        randomIndexes.add(questionIndex);
+                                    }
+                                });
+                            }else
+                            if(randomIndexes.contains(randomIndex)) {
+                                i--;
+                                continue;
+                            }
+                            else { // Любая страна (неправильный вариант ответа)
+                                answerButtons.get(i).setText(questions[randomIndex].getCorrectAnswer());
+                                answerButtons.get(i).setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Toast.makeText(MainActivity.this, "Не правильно", Toast.LENGTH_SHORT).show();
+                                        questionIndex++;
+                                        imageView.setImageResource(questions[questionIndex].getImageResId());
+                                        Collections.shuffle(answerButtons);
+                                        randomIndexes.clear();
+                                        randomIndexes.add(questionIndex);
+
+                                    }
+                                });
+                            }
+                            randomIndexes.add(randomIndex);
+
+                        }
+                    }
+                });
+            }else
+                if(randomIndexes.contains(randomIndex)) {
+                    i--;
+                    continue;
+                }
+                else { // Любая страна (неправильный вариант ответа)
+                    answerButtons.get(i).setText(questions[randomIndex].getCorrectAnswer());
+                    answerButtons.get(i).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(MainActivity.this, "Не правильно", Toast.LENGTH_SHORT).show();
+                            questionIndex++;
+                            imageView.setImageResource(questions[questionIndex].getImageResId());
+                            Collections.shuffle(answerButtons);
+                            randomIndexes.clear();
+                            randomIndexes.add(questionIndex);
+                            for (int i=0; i<answerButtons.size(); i++) {
+                                int randomIndex = random.nextInt(questions.length-1);
+                                if(i == answerButtons.size()-1){ // Правильный вариант ответа
+                                    answerButtons.get(i).setText(questions[questionIndex].getCorrectAnswer());
+                                    answerButtons.get(i).setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Toast.makeText(MainActivity.this, "Правильно", Toast.LENGTH_SHORT).show();
+                                            questionIndex++;
+                                            imageView.setImageResource(questions[questionIndex].getImageResId());
+                                            Collections.shuffle(answerButtons);
+                                            randomIndexes.clear();
+                                            randomIndexes.add(questionIndex);
+                                        }
+                                    });
+                                }else
+                                if(randomIndexes.contains(randomIndex)) {
+                                    i--;
+                                    continue;
+                                }
+                                else { // Любая страна (неправильный вариант ответа)
+                                    answerButtons.get(i).setText(questions[randomIndex].getCorrectAnswer());
+                                    answerButtons.get(i).setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Toast.makeText(MainActivity.this, "Не правильно", Toast.LENGTH_SHORT).show();
+                                            questionIndex++;
+                                            imageView.setImageResource(questions[questionIndex].getImageResId());
+                                            Collections.shuffle(answerButtons);
+                                            randomIndexes.clear();
+                                            randomIndexes.add(questionIndex);
+
+                                        }
+                                    });
+                                }
+                                randomIndexes.add(randomIndex);
+
+                            }
+                        }
+                    });
+                }
+            randomIndexes.add(randomIndex);
+
+        }
     }
 }
