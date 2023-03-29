@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
-    ImageView imageView;
-    Button button1;
+    ImageView imageView; // Объект ImageView (изначально пустой)
+    Button button1; // Объект Button (изначально пустой)
     Button button2;
     Button button3;
     Button button4;
@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
     };
     List<Question> questionList = Arrays.asList(questions);
     Random random = new Random();
-    int questionIndex = 0;
-    ArrayList<UserAnswer> userAnswers = new ArrayList<>();
+    int questionIndex = 0; // Индекс текущего вопроса
+    ArrayList<UserAnswer> userAnswers = new ArrayList<>(); // Коллекция ответов пользователя
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,8 +57,9 @@ public class MainActivity extends AppCompatActivity {
         answerButtons.add(button4);
         renderQuestion(answerButtons);
     }
+
     public void renderQuestion(ArrayList<Button> answerButtons){
-        Collections.shuffle(answerButtons);
+        Collections.shuffle(answerButtons); // перемешиваем кнопки в списке кнопок
         ArrayList<Integer> randomIndexes = new ArrayList<>();
         randomIndexes.add(questionIndex);
         for (int i=0; i<answerButtons.size(); i++) {
@@ -73,21 +74,21 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }else
-            if(randomIndexes.contains(randomIndex)) {
-                i--;
-                continue;
-            }
-            else { // Любая страна (неправильный вариант ответа)
-                answerButtons.get(i).setText(questions[randomIndex].getCorrectAnswer());
-                answerButtons.get(i).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        checkAnswer(false);
-                        renderQuestion(answerButtons);
-                    }
-                });
-            }
-            randomIndexes.add(randomIndex);
+                if(randomIndexes.contains(randomIndex)) {
+                    i--;
+                    continue;
+                }
+                else { // Любая страна (неправильный вариант ответа)
+                    answerButtons.get(i).setText(questions[randomIndex].getCorrectAnswer());
+                    answerButtons.get(i).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            checkAnswer(false);
+                            renderQuestion(answerButtons);
+                        }
+                    });
+                }
+                randomIndexes.add(randomIndex);
         }
     }
     public void checkAnswer(boolean btn){
