@@ -5,9 +5,9 @@ import java.io.Serializable;
 public class UserAnswer implements Serializable {
     private int question;
     private int correctAnswer;
-    private boolean userAnswer;
+    private String userAnswer;
 
-    public UserAnswer(int question, int correctAnswer, boolean userAnswer) {
+    public UserAnswer(int question, int correctAnswer, String userAnswer) {
         this.question = question;
         this.correctAnswer = correctAnswer;
         this.userAnswer = userAnswer;
@@ -21,7 +21,7 @@ public class UserAnswer implements Serializable {
         return correctAnswer;
     }
 
-    public boolean isUserAnswer() {
+    public String getUserAnswer() {
         return userAnswer;
     }
 }

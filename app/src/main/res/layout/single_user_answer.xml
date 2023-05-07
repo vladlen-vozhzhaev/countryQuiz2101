@@ -6,29 +6,32 @@
     android:layout_marginBottom="10dp"
     android:orientation="horizontal">
         <TableRow
+            android:id="@+id/rowAnswer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
             <ImageView
                 android:id="@+id/answerImage"
-                android:layout_width="50dp"
-                android:layout_height="40dp"
-                android:layout_weight="0.1"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:layout_weight="0.2"
                 app:srcCompat="@drawable/ad" />
 
             <TextView
                 android:id="@+id/correctAnswerTextView"
                 android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:textSize="20sp"
+                android:layout_height="50dp"
+                android:textSize="17sp"
                 android:layout_weight="0.4"
                 android:text="Андорра" />
 
             <TextView
                 android:id="@+id/userAnswerTextView"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:layout_weight="0.4"
-                android:textSize="20sp"
+                android:textSize="17sp"
                 android:text="TRUE" />
+
         </TableRow>
+
 </TableLayout>

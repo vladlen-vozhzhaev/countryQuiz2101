@@ -32,7 +32,9 @@ public class MainActivity extends AppCompatActivity {
       new Question(R.drawable.am, R.string.am),
       new Question(R.drawable.ao, R.string.ao),
       new Question(R.drawable.aq, R.string.aq),
-      new Question(R.drawable.ru, R.string.ru)
+      new Question(R.drawable.ru, R.string.ru),
+      new Question(R.drawable.ar, R.string.ar),
+      new Question(R.drawable.as, R.string.as)
     };
     List<Question> questionList = Arrays.asList(questions);
     Random random = new Random();
@@ -69,7 +71,9 @@ public class MainActivity extends AppCompatActivity {
                 answerButtons.get(i).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        checkAnswer(true);
+                        // Передаём что это правильный ответ и название страны (String)
+                        Button btn = findViewById(v.getId());
+                        checkAnswer(true, btn.getText().toString());
                         renderQuestion(answerButtons);
                     }
                 });
@@ -83,7 +87,9 @@ public class MainActivity extends AppCompatActivity {
                     answerButtons.get(i).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            checkAnswer(false);
+                            // Передаём что это не правильный ответ и название страны (int)
+                            Button btn = findViewById(v.getId());
+                            checkAnswer(false, btn.getText().toString());
                             renderQuestion(answerButtons);
                         }
                     });
@@ -91,11 +97,11 @@ public class MainActivity extends AppCompatActivity {
                 randomIndexes.add(randomIndex);
         }
     }
-    public void checkAnswer(boolean btn){
+    public void checkAnswer(boolean btn, String userCountryAnswer){
         UserAnswer userAnswer = new UserAnswer(
                 questions[questionIndex].getImageResId(), // Изображение флага
                 questions[questionIndex].getCorrectAnswer(), // Правильное название страны
-                btn // Правильный или не правильный ответ пользователя
+                userCountryAnswer // Правильный или не правильный ответ пользователя
         );
         userAnswers.add(userAnswer);
         if(btn)

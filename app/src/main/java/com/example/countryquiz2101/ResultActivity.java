@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -31,22 +33,29 @@ public class ResultActivity extends AppCompatActivity {
         recycleView.setLayoutManager(new LinearLayoutManager(ResultActivity.this));
         UserAnswerAdapter adapter = new UserAnswerAdapter(userAnswers);
         recycleView.setAdapter(adapter);
-
     }
     public class UserAnswerViewHolder extends RecyclerView.ViewHolder{
         TextView userAnswerTextView;
         TextView correctAnswerTextView;
         ImageView answerImage;
+        TableRow rowAnswer;
         public UserAnswerViewHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.single_user_answer, parent, false));
             userAnswerTextView = itemView.findViewById(R.id.userAnswerTextView);
             answerImage = itemView.findViewById(R.id.answerImage);
             correctAnswerTextView = itemView.findViewById(R.id.correctAnswerTextView);
+            rowAnswer = itemView.findViewById(R.id.rowAnswer);
         }
         public void bind(UserAnswer userAnswer){
             answerImage.setImageResource(userAnswer.getQuestion());
             correctAnswerTextView.setText(userAnswer.getCorrectAnswer());
-            userAnswerTextView.setText(String.valueOf(userAnswer.isUserAnswer()));
+            userAnswerTextView.setText(userAnswer.getUserAnswer());
+            if(getResources().getString(userAnswer.getCorrectAnswer()).equals(userAnswer.getUserAnswer())){
+                rowAnswer.setBackgroundColor(0xff98FB98);
+            }else{
+                rowAnswer.setBackgroundColor(0xffFA8072);
+            }
+
         }
     }
     public class UserAnswerAdapter extends RecyclerView.Adapter<UserAnswerViewHolder>{
